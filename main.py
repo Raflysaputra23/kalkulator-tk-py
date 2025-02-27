@@ -2,23 +2,39 @@ from tkinter import *
 
 def execute():
     try:
+        output.config(state="normal")
         if output.get().endswith("+") or output.get().endswith("-") or output.get().endswith("*") or output.get().endswith("/"):
             output.delete(len(output.get()) - 1)
         elif len(output.get()) > 0:
             result = eval(output.get())
             output.delete(0, END)
             output.insert(0, result)
+            
+        output.config(state="disabled")
     except:
         output.delete(0, END)
         output.insert(0, "Error")
+        output.config(state="disabled")
 
 def input(angka):
     operator = ["+", "-", "*", "/"]
+    output.config(state="normal")
     if (output.get().endswith("/") and angka in operator) or (output.get().endswith("*") and angka in operator )or (output.get().endswith("-") and angka in operator ) or (output.get().endswith("+") and angka in operator ):
         output.delete(len(output.get()) - 1)
         output.insert(END, angka)
     else:
         output.insert(END, angka)
+        
+    output.config(state="disabled")
+    
+def delete(opr):
+    output.config(state="normal")
+    if opr == "C":
+        output.delete(0, END)
+    else:
+        output.delete(len(output.get()) - 1)
+    output.config(state="disabled")
+    
         
         
 root = Tk()
@@ -38,7 +54,7 @@ root.rowconfigure(1, weight=1)
 root.rowconfigure(2, weight=1)
 root.rowconfigure(3, weight=1)
 root.rowconfigure(4, weight=1)
-output = Entry(border=2, font=("Arial, 16"), justify=RIGHT)
+output = Entry(border=2, font=("Arial, 16"), justify=RIGHT, state=DISABLED)
 output.grid(sticky="news", row=0, column=0, columnspan=5, ipadx=10, ipady=15)
 
 button1 = Button(text="1", border=2, font=("Arial, 12"), command=lambda: input("1"))
@@ -59,11 +75,11 @@ button8 = Button(text="8", border=2, font=("Arial, 12"), command=lambda: input("
 button8.grid(sticky="news", row=3, column=1)
 button9 = Button(text="9", border=2, font=("Arial, 12"), command=lambda: input("9"))
 button9.grid(sticky="news", row=3, column=2)
-buttonc = Button(text="Del", border=2, font=("Arial, 12"), command=lambda: output.delete(len(output.get()) - 1))
+buttonc = Button(text="Del", border=2, font=("Arial, 12"), command=lambda: delete("Del"))
 buttonc.grid(sticky="news", row=4, column=0)
 button0 = Button(text="0", border=2, font=("Arial, 12"), command=lambda: input("0"))
 button0.grid(sticky="news", row=4, column=1)
-button0 = Button(text="C", border=2, font=("Arial, 12"), command=lambda: output.delete(0, END))
+button0 = Button(text="C", border=2, font=("Arial, 12"), command=lambda: delete("C"))
 button0.grid(sticky="news", row=4, column=2)
 
 buttonplus = Button(text="+", border=2, font=("Arial, 12"), command=lambda: input("+"))
